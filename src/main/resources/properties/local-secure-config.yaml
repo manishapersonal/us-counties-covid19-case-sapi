@@ -1,0 +1,7 @@
+tls:
+  keystore:    
+    keyPassword: "![KCyFyi9rvi0/bS4Jqd1XG9SoyjmF9Kcx]" 
+    password: "![KCyFyi9rvi0/bS4Jqd1XG9SoyjmF9Kcx]"
+
+usCountiesCovid19CaseQueue:
+  password: "![TMS4M6Upz20=]"

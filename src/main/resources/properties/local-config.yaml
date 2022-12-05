@@ -1,0 +1,42 @@
+http:
+  port: "8081"
+  private:
+    port: "8091"
+    
+https:
+  port: "8082"
+  private:
+    port: "8092"
+
+usCountiesCovid19CaseApi:
+  host: "raw.githubusercontent.com"
+  port: "443"
+  basePath: "/nytimes"
+  path: "/covid-19-data/master/us-counties.csv"
+   
+api:
+  id: "18338987"
+  majorVersion: "v1"
+  groupId: "82dfac12-b94d-419e-8285-2a25c522ad8e"
+  artifactId: "us-counties-covid19-case-sapi"
+  version: "1.0.0"
+  specification: "resource::${api.groupId}:${api.artifactId}:${api.version}:raml:zip:us-counties-covid19-case-sapi.raml"
+
+##Local US Counties Covid19 Case Data CSV file
+usCountiesCovid19CsvFile:
+  path: "C:\\Manisha\\BigCompass\\POC\\input\\us-counties.csv"
+  targetPath: "C:\\Manisha\\BigCompass\\POC\\archive"
+ 
+##Apache Active MQ 
+usCountiesCovid19CaseQueue:
+  username: "admin"
+  //password: "admin"
+  brokerUrl: "tcp://localhost:61616"
+  name: "USCountiesCovid19CaseQueue"
+  
+##Anypoint MQ
+//usCountiesCovid19CaseQueue:
+  //name: "USCountiesCovid19CaseQueue"
+  //url: "https://mq-us-east-1.anypoint.mulesoft.com/api/v1"
+  //clientAppId: ""
+  //clientSecret: ""
