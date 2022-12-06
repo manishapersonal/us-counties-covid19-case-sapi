@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="con" path="org.mule.tooling.API_SPEC_LIB/62123581-121b-4c73-bf9d-19d53054fb8e/us-counties-covid19-case-sapi/1.0.0"/>
 	<classpathentry kind="con" path="MULE_LIB/org.mule.connectors/mule-jms-connector/1.8.4"/>
 	<classpathentry kind="con" path="MULE_LIB/org.mule.connectors/mule-file-connector/1.5.0"/>
 	<classpathentry kind="con" path="MULE_LIB/org.mule.connectors/mule-ftp-connector/1.8.1"/>
 	<classpathentry kind="con" path="org.mule.tooling.MULE_PROJECT_LIB"/>
 	<classpathentry kind="con" path="MULE_LIB/com.mulesoft.connectors/anypoint-mq-connector/3.2.0"/>
-	<classpathentry kind="con" path="org.mule.tooling.API_SPEC_LIB/82dfac12-b94d-419e-8285-2a25c522ad8e/us-counties-covid19-case-sapi/1.0.0"/>
 	<classpathentry kind="con" path="MULE_LIB/org.mule.modules/mule-apikit-module/1.7.0"/>
 	<classpathentry kind="con" path="MULE_LIB/org.mule.connectors/mule-sockets-connector/1.2.3"/>
 	<classpathentry kind="con" path="MULE_LIB/com.mulesoft.modules/mule-secure-configuration-property-module/1.2.5"/>

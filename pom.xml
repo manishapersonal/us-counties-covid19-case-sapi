@@ -95,13 +95,6 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>82dfac12-b94d-419e-8285-2a25c522ad8e</groupId>
-			<artifactId>us-counties-covid19-case-sapi</artifactId>
-			<version>1.0.0</version>
-			<classifier>raml</classifier>
-			<type>zip</type>
-		</dependency>
-		<dependency>
 			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-jms-connector</artifactId>
 			<version>1.8.4</version>
@@ -129,6 +122,13 @@
 			<artifactId>mule-file-connector</artifactId>
 			<version>1.5.0</version>
 			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>62123581-121b-4c73-bf9d-19d53054fb8e</groupId>
+			<artifactId>us-counties-covid19-case-sapi</artifactId>
+			<version>1.0.0</version>
+			<classifier>raml</classifier>
+			<type>zip</type>
 		</dependency>
 	</dependencies>
 

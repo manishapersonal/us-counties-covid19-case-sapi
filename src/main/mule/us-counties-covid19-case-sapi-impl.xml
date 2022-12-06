@@ -39,84 +39,9 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 	<!-- <anypoint-mq:config name="anypointMQConfig" doc:name="Anypoint MQ Config" doc:id="2b39e722-3624-4973-923f-d50b231c1061" >
 		<anypoint-mq:connection url="${usCountiesCovid19CaseQueue.url}" clientId="${usCountiesCovid19CaseQueue.clientAppId}" clientSecret="${usCountiesCovid19CaseQueue.clientSecret}" />
 	</anypoint-mq:config> -->
-	<file:config name="usCountiesFileConfig" doc:name="File Config" doc:id="90a47063-810e-4aba-8a73-5b4056e9fdd9" />
-<!-- [STUDIO:"get-us-counties-covid19-case-sapi-flow1"]	<flow
-		name="get-us-counties-covid19-case-sapi-flow1"
-		doc:id="3ae19d40-5fc4-4df6-8a28-226053b0f86b">
-		<logger
-			level="INFO"
-			doc:name="ENTRY"
-			doc:id="7b038ecc-5813-44c6-a022-cd5083088b3e"
-			message="ENTRY: #[flow.name]" />
-		<http:request
-			method="GET"
-			doc:name="Get US Counties Covid19 Case"
-			doc:id="9e1be43a-d087-4671-bc67-3b82893a0636"
-			config-ref="usCountiesHTTPRequestConfig"
-			path="${usCountiesCovid19CaseApi.path}"
-			outputMimeType="application/csv; streaming=true" responseTimeout="300000"/>
-		<ee:transform
-			doc:name="Streaming Payload"
-			doc:id="ac6d82cc-5323-48c0-92dc-1ea39287a3eb">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-@StreamCapable()
-input payload application/csv
-output application/csv
-&#45;&#45;-
-
-payload]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<foreach
-			doc:name="For Each"
-			doc:id="69501bc8-342a-48fb-9935-13712407df3d"
-			collection="#[payload]"
-			batchSize="100">
-			<logger
-				level="INFO"
-				doc:name="Payload"
-				doc:id="b2cc4d95-3f32-491d-98de-0b524c6c397b"
-				message="#[payload]" />
-			<ee:transform
-				doc:name="CSV To JSON"
-				doc:id="b12d83b8-faaa-43b7-934e-c9e83ef169f2">
-				<ee:message>
-					<ee:set-payload><![CDATA[%dw 2.0
-output application/json
-&#45;&#45;-
-payload map ((item,indexOfitem) -> {
-	"date": item.date[0] ,
-	"county": item.county[0],
-	"state": item.state[0],
-	"fips": item.fips[0],
-	"cases": item.cases[0] ,
-	"deaths": item.deaths[0]
-})]]></ee:set-payload>
-				</ee:message>
-			</ee:transform>
-			<!&#45;&#45; <anypoint-mq:publish doc:name="Publish To USCountiesCovid19CaseQueue" 
-				doc:id="88446c5b-b870-4b33-a916-1256e49667d1" config-ref="anypointMQConfig" 
-				destination="${usCountiesCovid19CaseQueue.name}"/> &#45;&#45;>
-			<jms:publish
-				doc:name="Publish To US-Counties-Covid-Case-Queue"
-				doc:id="7a7b27bf-0112-4d92-8def-4dbf927aad6e"
-				config-ref="activeMQJMSConfig"
-				sendCorrelationId="ALWAYS"
-				destination="${usCountiesCovid19CaseQueue.name}" persistentDelivery="true"/>
-		</foreach>
-
-		<!&#45;&#45; <ee:transform> <ee:message> <ee:set-payload><![CDATA[%dw 2.0 output 
-			application/json -&#45;&#45; [ { date: "2020-01-21", county: "Snohomish", 
-			state: "Washington", fips: 53061, cases: 1, deaths: 6 }, { date: "2020-01-24", 
-			county: "Cook", state: "Illinois", fips: 17031, cases: 5, deaths: 2 } ]]]></ee:set-payload> 
-			</ee:message> </ee:transform> &#45;&#45;>
-		<logger
-			level="INFO"
-			doc:name="EXIT"
-			doc:id="1d132a35-9669-45bc-bd4f-9a604d6eddb7"
-			message="EXIT: #[flow.name]" />
-	</flow> [STUDIO] -->
+	<file:config name="usCountiesFileConfig" doc:name="File Config" doc:id="90a47063-810e-4aba-8a73-5b4056e9fdd9" >
+		<file:connection workingDir="${mule.home}/apps/${app.name}/" />
+	</file:config>
 	<flow
 		name="get-us-counties-covid19-case-sapi-flow"
 		doc:id="a55fba40-7618-4913-958f-819f66aa4451">
@@ -127,7 +52,7 @@ payload map ((item,indexOfitem) -> {
 			message="ENTRY: #[flow.name]" />
 		<async doc:name="Async" doc:id="72dfbb9d-6b65-4335-b700-f1bb7b1bbdbe">
 		<try doc:name="Try" doc:id="eebb7456-c928-403d-91b9-cff358bc5d39" transactionalAction="BEGIN_OR_JOIN">
-			<file:read doc:name="Read US Counties Covid19 Case CSV" doc:id="61fc4de6-5109-489b-bef3-870abe95ee78" config-ref="usCountiesFileConfig" path="${usCountiesCovid19CsvFile.path}" outputMimeType="application/csv; streaming=true" />
+			<file:read doc:name="Read US Counties Covid19 Case CSV" doc:id="61fc4de6-5109-489b-bef3-870abe95ee78" config-ref="usCountiesFileConfig" path="${usCountiesCovid19CsvFile.sourcePath}" outputMimeType="application/csv; streaming=true" />
 			<ee:transform doc:name="Streaming Payload" doc:id="ca32f4b7-7721-4325-a2d3-7b11e7dfe643">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -161,7 +86,7 @@ payload map ((item,indexOfitem) -> {
 				destination="${usCountiesCovid19CaseQueue.name}"/> -->
 			<jms:publish doc:name="Publish To US-Counties-Covid-Case-Queue" doc:id="0164e9c5-6432-44c9-9888-e38fbef20a81" config-ref="activeMQJMSConfig" sendCorrelationId="ALWAYS" destination="${usCountiesCovid19CaseQueue.name}" persistentDelivery="true" />
 		</foreach>
-			<file:move doc:name="Move US Counties Covid19 Case CSV to Archive" doc:id="5dafceca-1d47-44c2-8a14-05e9ec704766" config-ref="usCountiesFileConfig" sourcePath="${usCountiesCovid19CsvFile.path}" targetPath="${usCountiesCovid19CsvFile.targetPath}" renameTo='#["us-counties-" ++ now() as String {format : "ddMMyyyy-HHmmss"} ++ ".csv"]' />
+			<file:move doc:name="Move US Counties Covid19 Case CSV to Archive" doc:id="5dafceca-1d47-44c2-8a14-05e9ec704766" config-ref="usCountiesFileConfig" sourcePath="${usCountiesCovid19CsvFile.sourcePath}" targetPath="${usCountiesCovid19CsvFile.targetPath}" renameTo='#[(attributes.fileName splitBy(".")) [0] ++ "-" ++ now() as String {format : "ddMMyyyy-HHmmss"} ++ ".csv"]' />
 			<logger level="INFO" doc:name="File moved to Archive" doc:id="59a6caa1-9674-49ae-9702-5033d9192838" message="File moved to TargetPath:  ${usCountiesCovid19CsvFile.targetPath}" />
 		</try>
 		</async>

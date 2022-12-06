@@ -15,23 +15,23 @@ usCountiesCovid19CaseApi:
   path: "/covid-19-data/master/us-counties.csv"
    
 api:
-  id: "18338987"
+  id: "18350170"
   majorVersion: "v1"
-  groupId: "82dfac12-b94d-419e-8285-2a25c522ad8e"
+  groupId: "62123581-121b-4c73-bf9d-19d53054fb8e"
   artifactId: "us-counties-covid19-case-sapi"
   version: "1.0.0"
   specification: "resource::${api.groupId}:${api.artifactId}:${api.version}:raml:zip:us-counties-covid19-case-sapi.raml"
 
 ##Local US Counties Covid19 Case Data CSV file
 usCountiesCovid19CsvFile:
-  path: "C:\\Manisha\\BigCompass\\POC\\input\\us-counties.csv"
-  targetPath: "C:\\Manisha\\BigCompass\\POC\\archive"
+  sourcePath: "input//us-counties-20records.csv"
+  targetPath: "archive//"
  
 ##Apache Active MQ 
 usCountiesCovid19CaseQueue:
   username: "admin"
   //password: "admin"
-  brokerUrl: "tcp://localhost:61616"
+  brokerUrl: "tcp://192.168.8.126:61616"
   name: "USCountiesCovid19CaseQueue"
   
 ##Anypoint MQ
