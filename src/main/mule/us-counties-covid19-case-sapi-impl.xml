@@ -50,10 +50,10 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 			doc:name="ENTRY"
 			doc:id="727df616-fca1-4d69-8be8-d5faf01db731"
 			message="ENTRY: #[flow.name]" />
-		<async doc:name="Async" doc:id="72dfbb9d-6b65-4335-b700-f1bb7b1bbdbe">
 		<try doc:name="Try" doc:id="eebb7456-c928-403d-91b9-cff358bc5d39" transactionalAction="BEGIN_OR_JOIN">
-			<file:read doc:name="Read US Counties Covid19 Case CSV" doc:id="61fc4de6-5109-489b-bef3-870abe95ee78" config-ref="usCountiesFileConfig" path="${usCountiesCovid19CsvFile.sourcePath}" outputMimeType="application/csv; streaming=true" />
-			<ee:transform doc:name="Streaming Payload" doc:id="ca32f4b7-7721-4325-a2d3-7b11e7dfe643">
+			<async doc:name="Async" doc:id="d3fa47c6-9099-4172-b4d5-4c730775b20b" >
+				<file:read doc:name="Read US Counties Covid19 Case CSV" doc:id="61fc4de6-5109-489b-bef3-870abe95ee78" config-ref="usCountiesFileConfig" path="${usCountiesCovid19CsvFile.sourcePath}" outputMimeType="application/csv; streaming=true" />
+				<ee:transform doc:name="Streaming Payload" doc:id="ca32f4b7-7721-4325-a2d3-7b11e7dfe643">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 @StreamCapable()
@@ -64,7 +64,7 @@ output application/csv
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-			<foreach doc:name="For Each" doc:id="b419f49c-6d04-4f40-b066-0fdcdf13109d" collection="#[payload]" batchSize="500">
+				<foreach doc:name="For Each" doc:id="b419f49c-6d04-4f40-b066-0fdcdf13109d" collection="#[payload]" batchSize="500">
 			<logger level="INFO" doc:name="Payload" doc:id="3690f673-216e-4c0e-a715-abde2c265ceb" message="#[payload]" />
 			<ee:transform doc:name="CSV To JSON" doc:id="3fa9f3c8-be15-49c3-8f02-90a7c34a869e">
 				<ee:message>
@@ -81,14 +81,14 @@ payload map ((item,indexOfitem) -> {
 })]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
-<!-- 			<anypoint-mq:publish doc:name="Publish To US-Counties-Covid-Case-Queue" doc:id="d67af4e4-254c-4149-b98e-cdb679d496fd" config-ref="publisherAnypointMQConfig" destination="${usCountiesCovid19CaseQueue.name}"/>
-					<jms:publish doc:name="Publish To US-Counties-Covid-Case-Queue" doc:id="0164e9c5-6432-44c9-9888-e38fbef20a81" config-ref="activeMQJMSConfig" sendCorrelationId="ALWAYS" destination="${usCountiesCovid19CaseQueue.name}" persistentDelivery="true" /> -->
+<!-- 			<anypoint-mq:publish doc:name="Publish To US-Counties-Covid-Case-Queue" doc:id="d67af4e4-254c-4149-b98e-cdb679d496fd" config-ref="publisherAnypointMQConfig" destination="${usCountiesCovid19CaseQueue.name}"/> -->
+					<jms:publish doc:name="Publish To US-Counties-Covid-Case-Queue" doc:id="0164e9c5-6432-44c9-9888-e38fbef20a81" config-ref="activeMQJMSConfig" sendCorrelationId="ALWAYS" destination="${usCountiesCovid19CaseQueue.name}" persistentDelivery="true" />
 		</foreach>
-			<file:move doc:name="Move US Counties Covid19 Case CSV to Archive" doc:id="5dafceca-1d47-44c2-8a14-05e9ec704766" config-ref="usCountiesFileConfig" sourcePath="${usCountiesCovid19CsvFile.sourcePath}" targetPath="${usCountiesCovid19CsvFile.targetPath}" renameTo='#[(attributes.fileName splitBy(".")) [0] ++ "-" ++ now() as String {format : "ddMMyyyy-HHmmss"} ++ ".csv"]' />
-			<logger level="INFO" doc:name="File moved to Archive" doc:id="59a6caa1-9674-49ae-9702-5033d9192838" message="File moved to TargetPath:  ${usCountiesCovid19CsvFile.targetPath}" />
+				<file:move doc:name="Move US Counties Covid19 Case CSV to Archive" doc:id="5dafceca-1d47-44c2-8a14-05e9ec704766" config-ref="usCountiesFileConfig" sourcePath="${usCountiesCovid19CsvFile.sourcePath}" targetPath="${usCountiesCovid19CsvFile.targetPath}" renameTo='#[(attributes.fileName splitBy(".")) [0] ++ "-" ++ now() as String {format : "ddMMyyyy-HHmmss"} ++ ".csv"]' />
+				<logger level="INFO" doc:name="File moved to Archive" doc:id="59a6caa1-9674-49ae-9702-5033d9192838" message="File moved to TargetPath:  ${usCountiesCovid19CsvFile.targetPath}" />
+			</async>
 		</try>
-		</async>
-		<!-- <ee:transform> <ee:message> <ee:set-payload><![CDATA[%dw 2.0 output 
+		<!-- <!&#45;&#45; <ee:transform> <ee:message> <ee:set-payload><![CDATA[%dw 2.0 output 
 			application/json -&#45;&#45; [ { date: "2020-01-21", county: "Snohomish", 
 			state: "Washington", fips: 53061, cases: 1, deaths: 6 }, { date: "2020-01-24", 
 			county: "Cook", state: "Illinois", fips: 17031, cases: 5, deaths: 2 } ]]]></ee:set-payload> 

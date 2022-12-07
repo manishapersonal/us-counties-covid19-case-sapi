@@ -16,11 +16,15 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 					<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Bad request"}]]></ee:set-payload>
+
+{
+	"errorCode": "400", 
+	"errorMessage": "Bad request"
+}]]></ee:set-payload>
 				</ee:message>
 				<ee:variables>
-					<ee:set-variable variableName="httpStatus">400
-					</ee:set-variable>
+					<ee:set-variable variableName="httpStatus"><![CDATA[400
+					]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 		</on-error-propagate>
@@ -30,11 +34,15 @@ output application/json
 					<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Resource not found"}]]></ee:set-payload>
+
+{
+	"errorCode": "404", 
+	"errorMessage": "Resource not found"
+}]]></ee:set-payload>
 				</ee:message>
 				<ee:variables>
-					<ee:set-variable variableName="httpStatus">404
-					</ee:set-variable>
+					<ee:set-variable variableName="httpStatus"><![CDATA[404
+					]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 		</on-error-propagate>
@@ -45,11 +53,15 @@ output application/json
 					<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Method not allowed"}]]></ee:set-payload>
+
+{
+	"errorCode": "405", 
+	"errorMessage": "Method not allowed"
+}]]></ee:set-payload>
 				</ee:message>
 				<ee:variables>
-					<ee:set-variable variableName="httpStatus">405
-					</ee:set-variable>
+					<ee:set-variable variableName="httpStatus"><![CDATA[405
+					]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 		</on-error-propagate>
@@ -59,11 +71,15 @@ output application/json
 					<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Not acceptable"}]]></ee:set-payload>
+
+{
+	"errorCode": "406", 
+	"errorMessage": "Not acceptable"
+}]]></ee:set-payload>
 				</ee:message>
 				<ee:variables>
-					<ee:set-variable variableName="httpStatus">406
-					</ee:set-variable>
+					<ee:set-variable variableName="httpStatus"><![CDATA[406
+					]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 		</on-error-propagate>
@@ -74,11 +90,15 @@ output application/json
 					<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Unsupported media type"}]]></ee:set-payload>
+
+{
+	"errorCode": "415", 
+	"errorMessage": "Unsupported media type"
+}]]></ee:set-payload>
 				</ee:message>
 				<ee:variables>
-					<ee:set-variable variableName="httpStatus">415
-					</ee:set-variable>
+					<ee:set-variable variableName="httpStatus"><![CDATA[415
+					]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 		</on-error-propagate>
@@ -88,12 +108,29 @@ output application/json
 					<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Not Implemented"}]]></ee:set-payload>
+
+{
+	"errorCode": "501", 
+	"errorMessage": "Not Implemented"
+}]]></ee:set-payload>
 				</ee:message>
 				<ee:variables>
-					<ee:set-variable variableName="httpStatus">501
-					</ee:set-variable>
+					<ee:set-variable variableName="httpStatus"><![CDATA[501
+					]]></ee:set-variable>
 				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1204b9b4-5e1e-4909-ad1a-709c6bf73e1a" type="ANY">
+			<ee:transform doc:name="Transform Message" doc:id="190cca96-c566-4b20-95e4-a6344199683f" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"errorCode": "500", 
+	"errorMessage": "Internal Server Error"
+}]]></ee:set-payload>
+				</ee:message>
 			</ee:transform>
 		</on-error-propagate>
 	</error-handler>
@@ -106,11 +143,14 @@ output application/json
 					<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Resource not found"}]]></ee:set-payload>
+{
+	"errorCode": "404", 
+	"errorMessage": "Resource not found"
+}]]></ee:set-payload>
 				</ee:message>
 				<ee:variables>
-					<ee:set-variable variableName="httpStatus">404
-					</ee:set-variable>
+					<ee:set-variable variableName="httpStatus"><![CDATA[404
+					]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 		</on-error-propagate>
