@@ -37,7 +37,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 		</jms:active-mq-connection>
 	</jms:config>
 	<file:config name="usCountiesFileConfig" doc:name="File Config" doc:id="90a47063-810e-4aba-8a73-5b4056e9fdd9" >
-		<file:connection workingDir="${mule.home}/apps/${app.name}/" />
+		<!-- <file:connection workingDir="${mule.home}/apps/${app.name}/" /> -->
 	</file:config>
 	<!-- <anypoint-mq:config name="publisherAnypointMQConfig" doc:name="Anypoint MQ Config" doc:id="388d2971-58a4-410d-87c4-97803de261a6" >
 		<anypoint-mq:connection url="${usCountiesCovid19CaseQueue.url}" clientId="${usCountiesCovid19CaseQueue.clientAppId}" clientSecret="${usCountiesCovid19CaseQueue.clientSecret}"/>
@@ -82,7 +82,7 @@ payload map ((item,indexOfitem) -> {
 				</ee:message>
 			</ee:transform>
 <!-- 			<anypoint-mq:publish doc:name="Publish To US-Counties-Covid-Case-Queue" doc:id="d67af4e4-254c-4149-b98e-cdb679d496fd" config-ref="publisherAnypointMQConfig" destination="${usCountiesCovid19CaseQueue.name}"/> -->
-					<jms:publish doc:name="Publish To US-Counties-Covid-Case-Queue" doc:id="0164e9c5-6432-44c9-9888-e38fbef20a81" config-ref="activeMQJMSConfig" sendCorrelationId="ALWAYS" destination="${usCountiesCovid19CaseQueue.name}" persistentDelivery="true" />
+					<jms:publish doc:name="Publish To US-Counties-Covid-Case-Queue" doc:id="0164e9c5-6432-44c9-9888-e38fbef20a81" config-ref="activeMQJMSConfig" sendCorrelationId="ALWAYS" destination="${usCountiesCovid19CaseQueue.name}" persistentDelivery="true"/>
 		</foreach>
 				<file:move doc:name="Move US Counties Covid19 Case CSV to Archive" doc:id="5dafceca-1d47-44c2-8a14-05e9ec704766" config-ref="usCountiesFileConfig" sourcePath="${usCountiesCovid19CsvFile.sourcePath}" targetPath="${usCountiesCovid19CsvFile.targetPath}" renameTo='#[(attributes.fileName splitBy(".")) [0] ++ "-" ++ now() as String {format : "ddMMyyyy-HHmmss"} ++ ".csv"]' />
 				<logger level="INFO" doc:name="File moved to Archive" doc:id="59a6caa1-9674-49ae-9702-5033d9192838" message="File moved to TargetPath:  ${usCountiesCovid19CsvFile.targetPath}" />

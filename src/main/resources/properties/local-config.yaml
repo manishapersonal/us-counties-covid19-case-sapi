@@ -24,8 +24,10 @@ api:
 
 ##Local US Counties Covid19 Case Data CSV file
 usCountiesCovid19CsvFile:
-  sourcePath: "input//us-counties-20records.csv"
-  targetPath: "archive//"
+  sourcePath: "C:\\Manisha\\BigCompass\\POC\\input\\us-counties.csv"
+  targetPath: "C:\\Manisha\\BigCompass\\POC\\archive\\"
+  ##sourcePath: "input//us-counties.csv"
+  ##targetPath: "archive//"
  
 ##Apache Active MQ 
 usCountiesCovid19CaseQueue:
