@@ -35,6 +35,9 @@ usCountiesCovid19CaseQueue:
   //password: "admin"
   brokerUrl: "tcp://192.168.8.126:61616"
   name: "USCountiesCovid19CaseQueue"
+  untilSuccessfull:
+    maxRetries: "3"
+    timeInterval: "30000"
   
 ##Anypoint MQ
 //usCountiesCovid19CaseQueue:

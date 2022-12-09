@@ -52,7 +52,9 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 			message="ENTRY: #[flow.name]" />
 		<try doc:name="Try" doc:id="eebb7456-c928-403d-91b9-cff358bc5d39" transactionalAction="BEGIN_OR_JOIN">
 			<async doc:name="Async" doc:id="d3fa47c6-9099-4172-b4d5-4c730775b20b" >
-				<file:read doc:name="Read US Counties Covid19 Case CSV" doc:id="61fc4de6-5109-489b-bef3-870abe95ee78" config-ref="usCountiesFileConfig" path="${usCountiesCovid19CsvFile.sourcePath}" outputMimeType="application/csv; streaming=true" />
+				<file:read doc:name="Read US Counties Covid19 Case CSV" doc:id="61fc4de6-5109-489b-bef3-870abe95ee78" config-ref="usCountiesFileConfig" path="${usCountiesCovid19CsvFile.sourcePath}" outputMimeType="application/csv; streaming=true" >
+					<reconnect />
+				</file:read>
 				<ee:transform doc:name="Streaming Payload" doc:id="ca32f4b7-7721-4325-a2d3-7b11e7dfe643">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -82,7 +84,16 @@ payload map ((item,indexOfitem) -> {
 				</ee:message>
 			</ee:transform>
 <!-- 			<anypoint-mq:publish doc:name="Publish To US-Counties-Covid-Case-Queue" doc:id="d67af4e4-254c-4149-b98e-cdb679d496fd" config-ref="publisherAnypointMQConfig" destination="${usCountiesCovid19CaseQueue.name}"/> -->
+					<until-successful maxRetries="${usCountiesCovid19CaseQueue.untilSuccessfull.maxRetries}" doc:name="Until Successful" doc:id="6e338e47-fa06-496d-a70b-11f05931a6bc" millisBetweenRetries="${usCountiesCovid19CaseQueue.untilSuccessfull.timeInterval}">
+				<try doc:name="Try" doc:id="7d942208-8f55-466f-a3d0-efffb6e9767b">
 					<jms:publish doc:name="Publish To US-Counties-Covid-Case-Queue" doc:id="0164e9c5-6432-44c9-9888-e38fbef20a81" config-ref="activeMQJMSConfig" sendCorrelationId="ALWAYS" destination="${usCountiesCovid19CaseQueue.name}" persistentDelivery="true"/>
+				<error-handler>
+						<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="0cd8d88a-55bc-46d0-8229-54308d171364" type="JMS:DESTINATION_NOT_FOUND, JMS:ILLEGAL_BODY">
+							<logger level="WARN" doc:name="Skip Retry" doc:id="f71d25ed-8420-4276-b7fa-7fd3eaccce3a" message="Skip Retry connecting to US Counties Covid Case Queue" />
+						</on-error-continue>
+					</error-handler>
+				</try>
+				</until-successful>
 		</foreach>
 				<file:move doc:name="Move US Counties Covid19 Case CSV to Archive" doc:id="5dafceca-1d47-44c2-8a14-05e9ec704766" config-ref="usCountiesFileConfig" sourcePath="${usCountiesCovid19CsvFile.sourcePath}" targetPath="${usCountiesCovid19CsvFile.targetPath}" renameTo='#[(attributes.fileName splitBy(".")) [0] ++ "-" ++ now() as String {format : "ddMMyyyy-HHmmss"} ++ ".csv"]' />
 				<logger level="INFO" doc:name="File moved to Archive" doc:id="59a6caa1-9674-49ae-9702-5033d9192838" message="File moved to TargetPath:  ${usCountiesCovid19CsvFile.targetPath}" />
