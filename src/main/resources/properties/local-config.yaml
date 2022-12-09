@@ -32,7 +32,6 @@ usCountiesCovid19CsvFile:
 ##Apache Active MQ 
 usCountiesCovid19CaseQueue:
   username: "admin"
-  //password: "admin"
   brokerUrl: "tcp://192.168.8.126:61616"
   name: "USCountiesCovid19CaseQueue"
   untilSuccessfull:
