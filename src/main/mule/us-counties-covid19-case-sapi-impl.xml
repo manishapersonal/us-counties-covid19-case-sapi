@@ -109,6 +109,12 @@ payload map ((item,indexOfitem) -> {
 			doc:name="EXIT"
 			doc:id="3d1d3f46-41cb-43a9-8e76-37447efa2e3e"
 			message="EXIT: #[flow.name]" />
+			<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="447855c7-f287-495d-9ef7-b334c82c0870" type="JMS:RETRY_EXHAUSTED,MULE:RETRY_EXHAUSTED">
+				<set-variable value="500" doc:name="httpStatus" doc:id="a440021f-9ff5-4aa1-b220-d48e0b81962f" variableName="httpStatus" />
+				<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;&#10;{&#10;	"errorCode": "500", &#10;	"errorMessage": "Retry connecting to Case Distribution US Counties Case JMS Queue"&#10;}]' doc:name="Set Payload" doc:id="2d782e82-8dd4-49f8-befc-49a1e10b465a" />
+			</on-error-propagate>
+		</error-handler>
 	</flow>
 	
 </mule>
